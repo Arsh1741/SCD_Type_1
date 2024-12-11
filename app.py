@@ -12,7 +12,7 @@ existing_df = spark.read.format("csv") \
                         .load('files/existing_employees.csv')
 source_df =  spark.read.format("csv") \
                         .option("header", "true") \
-                        .load('files/existing_employees.csv')
+                        .load('files/source_employees.csv')
 
 
 joined_df = source_df.alias("source").join(
@@ -36,4 +36,4 @@ anti_df = existing_df.join(upsert_df, on='EMPLOYEE_ID', how='anti')
 
 final_df = upsert_df.union(anti_df).sort('EMPLOYEE_ID')
 
-final_df.write.option('header', True).mode('overwrite').csv('files')
+final_df.write.option('header', True).mode('overwrite').csv('files/final_employees')
